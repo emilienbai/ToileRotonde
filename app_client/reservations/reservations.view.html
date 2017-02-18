@@ -1,0 +1,72 @@
+<navigation></navigation>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-6 col-sm-12">
+
+            <h1 class="form-signin-heading">Réservez la salle</h1>
+
+            <form ng-submit="vm.onSubmit()">
+                <div class="well" ng-repeat="res in vm.reservations.res">
+                    <div class="form-group">
+                        Reservation du : {{vm.formatDate(res)}}
+                    </div>
+                    <div class="form-group">
+                        <label name="reservationName">Nom de la réservation</label>
+                        <input type="text" class="form-control" ng-model="res.Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="range" ng-model="res.isRange"> Plusieur jours consécutifs
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <md-datepicker md-min-date="vm.minDate" ng-model="res.dateIn"
+                                       ng-change="vm.updateDateOut(res)"></md-datepicker>
+                        <span ng-show="res.isRange">
+                            <label>Date fin</label>
+                            <md-datepicker md-min-date="res.dateIn" ng-model="res.dateOut"></md-datepicker>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label name="slot">Période(s) souhaitée(s)</label>
+                        <div class="form-group">
+                            <label class="checkbox-inline">
+                                <input class="checkbox-inline" type="checkbox" name="morning" ng-model="res.morning">Matinée
+                                (8h-13h)
+                            </label>
+                            <label class="checkbox-inline">
+                                <input class="checkbox-inline" type="checkbox" name="afternoon"
+                                       ng-model="res.afternoon">Après
+                                midi (13h-18h)
+                            </label>
+                            <label class="checkbox-inline">
+                                <input class="checkbox-inline" type="checkbox" name="evening" ng-model="res.evening">Soirée
+                                (18h-00h)
+                            </label>
+                        </div>
+                        <label class="label-warning" ng-hide="vm.emptySlots(res)">Veuillez choisir au moins une
+                            période de la journée</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="audience" ng-model="res.audience">Public dans la salle?
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-default" ng-click="vm.addReservation()">Ajouter une
+                    réservation</button>
+                    <button ng-hide="vm.reservations.res.length<=1" type="button" class="btn btn-warning"
+                            ng-click="vm.removeReservation()">Retirer la
+                        dernière réservation</button>
+                </div>
+                <div class="form-group">
+                    <label name="comment">Commentaires</label>
+                    <textarea class="form-control" rows="5" ng-model="vm.reservations.comments"></textarea>
+                </div>
+                <button type="submit" class="btn btn-default">Enregistrer la/les réservation(s)</button>
+            </form>
+        </div>
+    </div>
+
+</div>

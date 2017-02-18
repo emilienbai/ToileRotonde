@@ -1,7 +1,7 @@
 (function () {
 
     angular
-        .module('meanApp')
+        .module('RotondeApp')
         .directive('navigation', navigation);
 
     function navigation() {
