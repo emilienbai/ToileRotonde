@@ -1,0 +1,35 @@
+<navigation></navigation>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Créer un compte</h1>
+            <p class="lead">Vous avez déjà un compte? <a href="login">Connectez vous.</a></p>
+            <form ng-submit="vm.onSubmit()">
+                <div class="form-group">
+                    <label for="name">Nom de l'association</label>
+                    <input type="text" class="form-control" id="name" placeholder="Nom de l'asscociation"
+                           ng-model="vm.credentials.name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Adresse email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Email de contact"
+                           ng-model="vm.credentials.email">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Numéro de téléphone</label>
+                    <input type="tel" class="form-control" id="phone" placeholder="Numéro de téléphone"
+                           ng-model="vm.credentials.phone">
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" class="form-control" id="password" placeholder="Mot de passe"
+                           ng-model="vm.credentials.password">
+                </div>
+                <button type="submit" class="btn btn-default">Créer un compte</button>
+            </form>
+        </div>
+    </div>
+
+</div>
