@@ -27,6 +27,19 @@
                 });
         };
 
+        var postReservationSSIAP = function (reservation) {
+            return $http.post('/api/reservationSSIAP',
+                {
+                    reservation: reservation
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + authentication.getToken()
+                    }
+                });
+        };
+
+
         var postArticle = function (article){
             var url = '/api/article';
             return multipartForm.post(url, article, function (response) {
@@ -39,7 +52,8 @@
             return {
                 getProfile: getProfile,
                 postReservations: postReservation,
-                postArticle: postArticle
+                postArticle: postArticle,
+                postReservationSSIAP: postReservationSSIAP
             };
         }
 

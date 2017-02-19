@@ -28,6 +28,11 @@
                 controller: 'reservationsCtrl',
                 controllerAs: 'vm'
             })
+            .when('/bookSSIAP', {
+                templateUrl: '/reservations/reservationSSIAP.view.html',
+                controller: 'reservationSSIAPCtrl',
+                controllerAs: 'vm'
+            })
             .when('/addArticle', {
                 templateUrl: '/addArticle/addArticle.view.html',
                 controller: 'addArticleCtrl',
@@ -44,7 +49,8 @@
         $rootScope.$on('$routeChangeStart', function (event, nextRoute, currentRoute) {
             if (($location.path() === '/profile'
                 || $location.path() === '/book'
-                || $location.path() == '/addArticle')
+                || $location.path() == '/addArticle'
+                || $location.path() == '/bookSSIAP')
                 && !authentication.isLoggedIn()) {
                 $location.path('/login');
             }
