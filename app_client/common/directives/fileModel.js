@@ -1,5 +1,4 @@
 (function () {
-
     angular
         .module('RotondeApp')
         .directive('fileModel', ['$parse', function ($parse) {

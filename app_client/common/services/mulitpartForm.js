@@ -4,8 +4,8 @@
         .module('RotondeApp')
         .service('multipartForm', multipartForm);
 
-    multipartForm.$inject = ['$http'];
-    function multipartForm($http) {
+    multipartForm.$inject = ['$http', 'authentication'];
+    function multipartForm($http, authentication) {
         this.post = function(uploadUrl, data, callback){
             var fd = new FormData();
             for(var key in data){
@@ -14,7 +14,9 @@
 
             $http.post(uploadUrl, fd, {
                 transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
+                headers: {
+                    'Content-Type': undefined,
+                    'Authorization': 'Bearer ' + authentication.getToken()}
             }).then(
                 function(response){
                    callback(response);

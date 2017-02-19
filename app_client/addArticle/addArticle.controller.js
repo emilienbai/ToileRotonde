@@ -3,8 +3,8 @@
         .module('RotondeApp')
         .controller('addArticleCtrl', addArticleCtrl);
 
-    addArticleCtrl.$inject = ['meanData'];
-    function addArticleCtrl(meanData) {
+    addArticleCtrl.$inject = ['authentication', 'meanData'];
+    function addArticleCtrl(authentication, meanData) {
         var vm = this;
 
         vm.multipleDates = false;
@@ -15,7 +15,9 @@
             dateIn: new Date(),
             dateOut: new Date(),
             time: "",
-            text:""
+            text:"",
+            orgaID: authentication.currentUser().id,
+            orgaName: authentication.currentUser().name
         };
 
         vm.updateDateOut = function() {
