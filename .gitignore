@@ -41,3 +41,4 @@ jspm_packages
 .idea/workspace.xml
 app_client/app.min.js
 app_client/app.min.js.map
+.idea/misc.xml

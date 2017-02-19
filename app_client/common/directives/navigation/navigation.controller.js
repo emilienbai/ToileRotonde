@@ -1,7 +1,7 @@
 (function () {
 
     angular
-        .module('meanApp')
+        .module('RotondeApp')
         .controller('navigationCtrl', navigationCtrl);
 
     navigationCtrl.$inject = ['$location', 'authentication'];

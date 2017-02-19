@@ -1,7 +1,7 @@
 (function () {
 
     angular
-        .module('meanApp')
+        .module('RotondeApp')
         .service('meanData', meanData);
 
     meanData.$inject = ['$http', 'authentication'];
@@ -15,9 +15,23 @@
             });
         };
 
-        return {
-            getProfile: getProfile
+        var postReservation = function (reservations) {
+            return $http.post('/api/reservations',
+                {
+                    reservations: reservations
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + authentication.getToken()
+                    }
+                });
         };
-    }
 
-})();
+            return {
+                getProfile: getProfile,
+                postReservations: postReservation
+            };
+        }
+
+    }
+    )();

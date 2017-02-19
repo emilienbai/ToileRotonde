@@ -1,7 +1,7 @@
 (function () {
 
     angular
-        .module('meanApp')
+        .module('RotondeApp')
         .controller('registerCtrl', registerCtrl);
 
     registerCtrl.$inject = ['$location', 'authentication'];
@@ -13,7 +13,7 @@
             email: "",
             phone: "",
             password: "",
-            accountType:"Orga"
+            accountType:"OrgaINSA"
         };
 
         vm.onSubmit = function () {
