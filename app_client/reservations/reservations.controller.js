@@ -4,10 +4,11 @@
         .module('RotondeApp')
         .controller('reservationsCtrl', reservationsCtrl)
 
-    reservationsCtrl.$inject = ['$location', 'authentication'];
-    function reservationsCtrl($location, authentication) {
+    reservationsCtrl.$inject = ['$location', 'authentication', 'meanData'];
+    function reservationsCtrl($location, authentication, meanData) {
         var vm = this;
         vm.minDate = new Date();
+        vm.result = "";
         vm.reservations = {
             res : [newReservation()],
             light: 0,
@@ -45,6 +46,25 @@
             return (reservation.morning || reservation.afternoon || reservation.evening)
         };
 
+        vm.onSubmit = function (){
+            //todo check slots
+            meanData.postReservations(vm.reservations)
+                .error(function (err) {
+                    //alert(err.message);
+                    vm.result = "Erreur lors de l'enregistrement de votre réservation"
+                })
+                .then(function () {
+                    vm.reservations = {
+                        res : [newReservation()],
+                        light: 0,
+                        sound: 0,
+                        comments :""
+                    };
+                    vm.result = "Votre/vos réservations ont été enregistrées avec succès. Un mail récapitulatif" +
+                        " viens de vous être envoyé."
+                });
+        };
+
         function newReservation(){
             var res = {
                 name:"",
@@ -57,10 +77,9 @@
                 audience: false,
                 orgaID: authentication.currentUser().id,
                 orgaName: authentication.currentUser().name
-            }
+            };
             return res;
         }
-
     };
 
 
