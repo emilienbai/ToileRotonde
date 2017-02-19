@@ -5,7 +5,7 @@ var User = mongoose.model('User');
 module.exports.postReservations = function (req, res) {
     if (!req.payload._id || !req.body.reservations) {
         res.status(201).json({
-            "message": "Missing payload, playlistID or comment"
+            "message": "Missing payload or reservation"
         });
     } else {
         User
