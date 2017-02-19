@@ -1,0 +1,68 @@
+<navigation></navigation>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-9 col-sm-12">
+
+            <h1 class="form-signin-heading">Réserver un agent SSIAP</h1>
+
+            <form ng-submit="vm.onSubmit()">
+                <div class="well">
+                    <div class="form-group">
+                        <label for="name" name="reservationName">Nom du spectacle</label>
+                        <input id="name" type="text" class="form-control" ng-model="vm.reservation.name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="multiple"><input id="multiple" type="checkbox" name="unique"
+                                                     ng-model="vm.multipleDates"> Plusieur jours consécutifs</label>
+                    </div>
+                    <div class="form-group form-inline">
+                        <label for="din">
+                            <span ng-hide="vm.multipleDates">Date</span>
+                            <span ng-show="vm.multipleDates">Du</span>
+                        </label>
+                        <md-datepicker id="din" md-min-date="vm.minDate" ng-model="vm.reservation.dateIn"
+                                       ng-change="vm.updateDateOut()"></md-datepicker>
+                        <span ng-show="vm.multipleDates">
+                            <label for="dout">Au</label>
+                            <md-datepicker id="dout" md-min-date="vm.reservation.dateIn"
+                                           ng-model="vm.reservation.dateOut"></md-datepicker>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-4">
+                            <label name="time">Heure d'ouverture des portes (Format hh:mm)</label>
+                            <div class="form-group form-inline">
+                                <input class="form-control" type="text" pattern="^((?:[01]\d|2[0-3]):[0-5]\d$)"
+                                       ng-model="vm.reservation.timeOpening" placeholder="20:15" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label name="time">Heure  de début du spectacle (Format hh:mm)</label>
+                            <div class="form-group form-inline">
+                                <input class="form-control" type="text" pattern="^((?:[01]\d|2[0-3]):[0-5]\d$)"
+                                       ng-model="vm.reservation.timeStart" placeholder="20:30" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label name="time">Durée approximative (Format h:mm)</label>
+                            <div class="form-group form-inline">
+                                <input class="form-control" type="text" pattern="^(\d:[0-5]\d$)"
+                                       ng-model="vm.reservation.duration" placeholder="2:15" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label name="comment">Description du spectacle</label>
+                        <textarea class="form-control" rows="5" ng-model="vm.reservation.comment"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-default">Enregistrer la réservation</button>
+            </form>
+        </div>
+    </div>
+
+</div>
