@@ -28,6 +28,11 @@
                 controller: 'reservationsCtrl',
                 controllerAs: 'vm'
             })
+            .when('/addArticle', {
+                templateUrl: '/addArticle/addArticle.view.html',
+                controller: 'addArticleCtrl',
+                controllerAs: 'vm'
+            })
 
             .otherwise({redirectTo: '/'});
 
@@ -38,7 +43,8 @@
     function run($rootScope, $location, authentication) {
         $rootScope.$on('$routeChangeStart', function (event, nextRoute, currentRoute) {
             if (($location.path() === '/profile'
-                ||$location.path() === '/book')
+                || $location.path() === '/book'
+                || $location.path() == '/addArticle')
                 && !authentication.isLoggedIn()) {
                 $location.path('/login');
             }

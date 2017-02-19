@@ -4,8 +4,8 @@
         .module('RotondeApp')
         .service('meanData', meanData);
 
-    meanData.$inject = ['$http', 'authentication'];
-    function meanData($http, authentication) {
+    meanData.$inject = ['$http', 'authentication', 'multipartForm'];
+    function meanData($http, authentication, multipartForm) {
 
         var getProfile = function () {
             return $http.get('/api/profile', {
@@ -27,9 +27,19 @@
                 });
         };
 
+        var postArticle = function (article){
+            var url = '/api/article';
+            return multipartForm.post(url, article, function (response) {
+                if (response.status === 200) {
+                    //todo party hard
+                }
+            });
+        };
+
             return {
                 getProfile: getProfile,
-                postReservations: postReservation
+                postReservations: postReservation,
+                postArticle: postArticle
             };
         }
 
