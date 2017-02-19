@@ -48,4 +48,5 @@ process.on('SIGTERM', function () {
 // BRING IN YOUR SCHEMAS & MODELS
 require('./users');
 require('./reservation');
+require('./reservationSSIAP');
 require('./article');

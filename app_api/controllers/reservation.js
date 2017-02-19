@@ -12,11 +12,7 @@ module.exports.postReservations = function (req, res) {
             .findById(req.payload._id)
             .exec(function (err, user) {
                 if (!err) {
-                    console.log(user);
-                    console.log(req.payload._id);
                     if (user._id == req.payload._id || user.accountType == "admin") {
-                        console.log("user is fine");
-
                         var reservation = new Reservation();
                         reservation.res = req.body.reservations.res;
                         reservation.light = req.body.reservations.light;

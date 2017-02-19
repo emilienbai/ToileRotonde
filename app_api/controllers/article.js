@@ -21,8 +21,6 @@ module.exports.postArticle = function (req, res) {
             .exec(function (err, user) {
                 if (!err) {
                     if (user._id == req.payload._id || user.accountType == "admin") {
-                        console.log("user is fine");
-
                         var saveArticle = function (imageUrl) {
                             var article = new Article();
                             article.name = req.body.name;

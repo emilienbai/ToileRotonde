@@ -9,6 +9,7 @@ var auth = jwt({
 
 var ctrlProfile = require('../controllers/profile');
 var ctrlReservations = require('../controllers/reservation');
+var ctrlReservationSSIAP = require('../controllers/reservationSSIAP');
 var ctrlArticles = require('../controllers/article');
 var ctrlAuth = require('../controllers/authentication');
 
@@ -19,6 +20,9 @@ router.get('/profile', auth, ctrlProfile.profileRead);
 
 //reservations
 router.post('/reservations', auth, ctrlReservations.postReservations);
+
+//reservationSSIAP
+router.post('/reservationSSIAP', auth, ctrlReservationSSIAP.postReservationSSIAP);
 
 //articles
 router.post('/article', auth, ctrlArticles.postArticle);
