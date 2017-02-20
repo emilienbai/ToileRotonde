@@ -11,21 +11,20 @@ var reservationSchema = new mongoose.Schema({
             afternoon: Boolean, //afternoon slot checked
             evening: Boolean,   //evening slot checked
             audience: Boolean,  //audience in hall
-            orgaID: {           //Organization - User creating
-                type: String,
-                required: true
-            },
-            orgaName: String,   //Name of creator
-            savedOn: {          //Date of registration
-                type: Date,
-                default: Date.now
-            },
-            valid: {            //Have been validated by an admin
-                type: Boolean,
-                default: false
-            }
-
         }],//newReservation()],
+        orgaID: {           //Organization - User creating
+            type: String,
+            required: true
+        },
+        orgaName: String,   //Name of creator
+        savedOn: {          //Date of registration
+            type: Date,
+            default: Date.now
+        },
+        archived: {            //Have been validated by an admin
+            type: Boolean,
+            default: false
+        },
         light: Number,          //Needs concerning light
         sound: Number,          //Needs concerning sound
         comments :String        //Eventual comments if needed

@@ -19,6 +19,10 @@ var articleSchema = new mongoose.Schema({
     valid: {            //Have been validated by an admin
         type: Boolean,
         default: false
+    },
+    archived: {            //Have been validated by an admin
+        type: Boolean,
+        default: false
     }
 });
 

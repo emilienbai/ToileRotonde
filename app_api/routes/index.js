@@ -20,12 +20,15 @@ router.get('/profile', auth, ctrlProfile.profileRead);
 
 //reservations
 router.post('/reservations', auth, ctrlReservations.postReservations);
+router.get('/reservations', auth, ctrlReservations.getUserReservations);
 
 //reservationSSIAP
 router.post('/reservationSSIAP', auth, ctrlReservationSSIAP.postReservationSSIAP);
+router.get('/reservationSSIAP', auth, ctrlReservationSSIAP.getReservations);
 
 //articles
 router.post('/article', auth, ctrlArticles.postArticle);
+router.get('/article', auth, ctrlArticles.getUserArticles);
 // authentication
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);

@@ -2,31 +2,175 @@
 
 <div class="container">
     <div class="row">
-
-        <div class="col-md-6">
-
+        <div class="col-md-2">
             <h1 class="form-signin-heading">Votre compte</h1>
-
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Nom</label>
-                    <p class="form-control-static">{{ vm.user.name }}</p>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Courriel</label>
-                    <p class="form-control-static">{{ vm.user.email }}</p>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Téléphone</label>
-                    <p class="form-control-static">{{ vm.user.phone }}</p>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Type de compte</label>
-                    <p class="form-control-static">{{ vm.user.accountType }}</p>
-                </div>
-            </form>
-
+            <div class="form-group">
+                <label class="control-label">Nom</label>
+                <p class="form-control-static">{{ vm.user.name }}</p>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Courriel</label>
+                <p class="form-control-static">{{ vm.user.email }}</p>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Téléphone</label>
+                <p class="form-control-static">{{ vm.user.phone }}</p>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Type de compte</label>
+                <p class="form-control-static">{{ vm.user.accountType }}</p>
+            </div>
         </div>
+        <!-------------------------ORGANISATION---------------------------->
+        <div ng-show="vm.isOrga">
+            <!--Todo : des boutons liens pour ajouter des resas, modifier
+            des trucs...-->
+            <div class="col-md-3">
+                <h1 class="form-signin-heading">Réservations SSIAP en attente</h1>
+                <div class="well" ng-repeat="sRes in vm.sReservations | orderBy:'dateIn'">
+                    <div>
+                        <label>Réservation {{vm.formatDate(sRes)}}</label>
+                    </div>
+                    <div>
+                        <label>Pour : {{sRes.name}}</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label>Ouverture des portes</label>
+                            <div>{{sRes.timeOpening}}</div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label>Début du spectacle</label>
+                            <div>{{sRes.timeStart}}</div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label>Durée</label>
+                            <div>{{sRes.duration}}</div>
+                        </div>
+                    </div>
 
+                    <div>
+                        <label>Commentaires</label>
+                        <div>{{sRes.comment}}</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+                <h1 class="form-signin-heading">Articles</h1>
+                <div class="well" ng-repeat="art in vm.articles | orderBy:'-dateIn'">
+                    <div>
+                        <label>{{art.name}}</label>
+                        <label>{{vm.formatDate(art)}} à {{art.time}} par {{art.orgaName}}</label>
+                    </div>
+                    <div>
+                        <label>Description</label>
+                        <div>{{art.text}}</div>
+                    </div>
+                    <div ng-show="{{vm.hasImage(art)}}" class="form-group"><a target="_blank"
+                                                                              href="{{art.imageUrl}}">Image</a></div>
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <h1 class="form-signin-heading">Réservations en attente</h1>
+                <div class="well" ng-repeat="res in vm.reservations | orderBy:'savedOn'">
+                    <div class="row" ng-repeat="slot in res.res">
+                        <div class="col-sm-7">
+                            <span>{{slot.name}}  {{vm.formatDate(slot)}}</span>
+                        </div>
+                        <div class="col-sm-1"><input type="checkbox" disabled ng-checked="{{slot.morning}}">M</div>
+                        <div class="col-sm-1"><input type="checkbox" disabled ng-checked="{{slot.afternoon}}">AM</div>
+                        <div class="col-sm-1"><input type="checkbox" disabled ng-checked="{{slot.evening}}">S</div>
+                        <div class="col-sm-1"><input type="checkbox" disabled ng-checked="{{slot.audience}}">P</div>
+                        <hr>
+                    </div>
+                    <label>Commentaire : </label><span>{{res.comments}}</span>
+                </div>
+            </div>
+        </div>
+        <!-------------------------ADMIN---------------------------->
+        <div ng-show="vm.isAdmin">
+            <div class="col-md-5">
+                <h1 class="form-signin-heading">Réservations SSIAP en attente</h1>
+                <div class="well" ng-repeat="sRes in vm.sReservations | orderBy:'dateIn'">
+                    <div>
+                        <label>Réservation {{vm.formatDate(sRes)}}</label>
+                    </div>
+                    <div>
+                        <label>Pour : {{sRes.name}}, par {{sRes.orgaName}}</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label>Ouverture des portes</label>
+                            <div>{{sRes.timeOpening}}</div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label>Début du spectacle</label>
+                            <div>{{sRes.timeStart}}</div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label>Durée</label>
+                            <div>{{sRes.duration}}</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label>Commentaires</label>
+                        <div>{{sRes.comment}}</div>
+                    </div>
+                    <div class="col-md-offset-8">
+                        <button class="btn btn-default" type="button" ng-click="todo">Ajouter au <!--todo-->
+                            template</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-5">
+                <h1 class="form-signin-heading">Articles à valider</h1>
+                <div class="well" ng-repeat="art in vm.articles | orderBy:'-dateIn'">
+                    <div>
+                        <label>{{art.name}}</label>
+                        <label>{{vm.formatDate(art)}} à {{art.time}}</label>
+                    </div>
+                    <div>
+                        <label>Description</label>
+                        <div>{{art.text}}</div>
+                    </div>
+                    <div ng-show="{{vm.hasImage(art)}}" class="form-group"><a target="_blank"
+                                                                              href="{{art.imageUrl}}">Image</a></div>
+                    <div class="col-md-offset-8">
+                        <button class="btn btn-default" type="button" ng-click="todo">Valider cet article</button>
+                        <!--todo-->
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <h1 class="form-signin-heading">Réservations en attente</h1>
+                <div class="well" ng-repeat="res in vm.reservations | orderBy:'savedOn'">
+                    <div class="row" ng-repeat="slot in res.res">
+                        <div class="col-sm-7">
+                            <span>{{slot.name}}  {{vm.formatDate(slot)}}</span>
+                        </div>
+                        <div class="col-sm-1"><input type="checkbox" disabled ng-checked="{{slot.morning}}">M</div>
+                        <div class="col-sm-1"><input type="checkbox" disabled ng-checked="{{slot.afternoon}}">AM</div>
+                        <div class="col-sm-1"><input type="checkbox" disabled ng-checked="{{slot.evening}}">S</div>
+                        <div class="col-sm-1"><input type="checkbox" disabled ng-checked="{{slot.audience}}">P</div>
+                        <hr>
+                    </div>
+                    <label>Commentaire : </label><span>{{res.comments}}</span>
+                </div>
+            </div>
+        </div>
     </div>
+
 </div>
+
+
+
+

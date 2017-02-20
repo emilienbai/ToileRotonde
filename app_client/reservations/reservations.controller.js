@@ -9,11 +9,14 @@
         var vm = this;
         vm.minDate = new Date();
         vm.result = "";
+
         vm.reservations = {
             res : [newReservation()],
             light: 0,
             sound: 0,
-            comments :""
+            comments :"",
+            orgaID: authentication.currentUser().id,
+            orgaName: authentication.currentUser().name
         };
 
         vm.addReservation = function() {
@@ -56,6 +59,8 @@
                 .then(function () {
                     vm.reservations = {
                         res : [newReservation()],
+                        orgaID: authentication.currentUser().id,
+                        orgaName: authentication.currentUser().name,
                         light: 0,
                         sound: 0,
                         comments :""
@@ -74,9 +79,7 @@
                 morning: false,
                 afternoon: false,
                 evening: false,
-                audience: false,
-                orgaID: authentication.currentUser().id,
-                orgaName: authentication.currentUser().name
+                audience: false
             };
             return res;
         }

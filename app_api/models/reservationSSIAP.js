@@ -9,7 +9,15 @@ var reservationSSIAPSchema = new mongoose.Schema({
     duration: String,
     comment: String,
     orgaID: String,
-    orgaName: String
+    orgaName: String,
+    archived: {
+        type: Boolean,
+        default: false
+    },
+    savedOn: {          //Date of registration
+        type: Date,
+        default: Date.now
+    }
 });
 
 mongoose.model('ReservationSSIAP', reservationSSIAPSchema);

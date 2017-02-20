@@ -6,12 +6,7 @@ var User = mongoose.model('User');
 
 module.exports.postArticle = function (req, res) {
     console.log(req);
-    if (!req.payload._id    ||
-        !req.body.name      ||
-        !req.body.dateIn    ||
-        !req.body.dateOut   ||
-        !req.body.orgaID    ||
-        !req.body.orgaName) {
+    if (!req.payload._id || !req.body.name || !req.body.dateIn || !req.body.dateOut || !req.body.orgaID || !req.body.orgaName) {
         res.status(201).json({
             "message": "Missing payload or article element"
         });
@@ -77,3 +72,75 @@ module.exports.postArticle = function (req, res) {
             });
     }
 };
+
+module.exports.getUserArticles = function (req, res) {
+    console.log("zobzob");
+    if (!req.payload._id) {
+        res.status(201).json({
+            "message": "Missing payload in header"
+        });
+    }
+    else {
+        var onMongoResults = function (err, docs) {
+            if (err) {
+                res.status(401).json({
+                    "message": err
+                })
+            } else {
+                res.status(200).json(docs);
+            }
+        };
+
+        var archived = false;
+        if (req.query.archived) {
+            archived = req.query.archived;
+        }
+        //Organizations can see all of their articles but not the not validated ones for the other -> /todo later for
+        // other
+        //Admin can see all reservations they want
+        if (req.query.orgaID == req.payload._id) { // Organization try to see its own articles
+            Article.find({
+                'orgaID': req.query.orgaID,
+                'archived': archived
+            }, function (err, docs) {
+                onMongoResults(err, docs);
+            });//onMongoResults(err, docs));
+        }
+        else { //If admin account try to retrieve articles or
+            User
+                .findById(req.payload._id)
+                .exec(function (err, user) {
+                    if (!err) {
+                        if (user.accountType == "admin") { //Admin authenticated
+                            console.log("zob");
+                            //Trying to get all SSIAP reservations
+                            var valid = true;
+                            if (req.query.valid != null) {
+                                valid = req.query.valid;
+                            }
+                            if (req.query.orgaID == null) {
+                                Article.find({
+                                    'archived': archived,
+                                    'valid': valid
+                                }, function (err, docs) {
+                                    onMongoResults(err, docs);
+                                })
+                            } else {    //Trying to get SSIAP reservations for defined organization
+                                Article.find({
+                                    'orgaID': req.query.orgaID,
+                                    'archived': archived,
+                                    'valid': valid
+                                }, function (err, docs) {
+                                    onMongoResults(err, docs);
+                                })
+                            }
+                        } else {
+                            res.status(201).json({
+                                "message": "You are not allowed to see theses reservations"
+                            })
+                        }
+                    }
+                });
+        }
+    }
+}
