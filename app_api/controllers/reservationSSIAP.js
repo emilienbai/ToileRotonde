@@ -30,7 +30,6 @@ module.exports.postReservationSSIAP = function (req, res) {
                                 res.status(200).json({
                                     message: "reservation saved !"
                                 });
-                                //todo: send email;
                             } else {
                                 res.status(400).json({
                                     message: error
@@ -44,6 +43,34 @@ module.exports.postReservationSSIAP = function (req, res) {
                     }
                 }
             });
+    }
+};
+
+module.exports.archiveReservation = function (req, res) {
+    if (!req.payload._id || !req.body.reservation) {
+        res.status(201).json({
+            "message": "Missing payload or reservation"
+        });
+    } else {
+        User
+            .findById(req.payload._id)
+            .exec(function (err, user) {
+                if (!err) {
+                    if (user.accountType == "admin") { //Only admins can edit a reservation
+                        console.log(req.body.reservation);
+                        ReservationSSIAP.update({_id: req.body.reservation._id},
+                            {$set: {archived: req.body.reservation.archived}}, function (error, doc) {
+                                if (!error) {
+                                    res.status(200).json(doc);
+                                } else {
+                                    res.status(400).json({
+                                        message: error
+                                    });
+                                }
+                            });
+                    }
+                }
+            })
     }
 };
 
@@ -74,7 +101,9 @@ module.exports.getReservations = function (req, res) {
             ReservationSSIAP.find({
                 'orgaID': req.query.orgaID,
                 'archived': archived
-            }, function(err, docs){onMongoResults(err, docs);});//onMongoResults(err, docs));
+            }, function (err, docs) {
+                onMongoResults(err, docs);
+            });//onMongoResults(err, docs));
         } else { //If admin account try to retrieve reservations
             User
                 .findById(req.payload._id)
@@ -85,12 +114,16 @@ module.exports.getReservations = function (req, res) {
                             if (req.query.orgaID == null) {
                                 ReservationSSIAP.find({
                                     'archived': archived
-                                }, function(err, docs){onMongoResults(err, docs);})
+                                }, function (err, docs) {
+                                    onMongoResults(err, docs);
+                                })
                             } else {    //Trying to get SSIAP reservations for defined organization
                                 ReservationSSIAP.find({
                                     'orgaID': req.query.orgaID,
                                     'archived': archived
-                                }, function(err, docs){onMongoResults(err, docs);})
+                                }, function (err, docs) {
+                                    onMongoResults(err, docs);
+                                })
                             }
                         } else {
                             res.status(201).json({
@@ -102,3 +135,4 @@ module.exports.getReservations = function (req, res) {
         }
     }
 };
+

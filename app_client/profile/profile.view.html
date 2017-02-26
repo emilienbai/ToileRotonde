@@ -154,8 +154,7 @@
                         <div>{{sRes.comment}}</div>
                     </div>
                     <div class="col-md-offset-10">
-                        <button class="btn btn-default" type="button" ng-click="todo">Ajouter au
-                            template
+                        <button class="btn btn-default" type="button" ng-click="vm.archiveSSIAPRes(sRes)">Archiver
                         </button>
                     </div>
                 </div>
@@ -215,7 +214,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <button type="button" class="btn btn-default" ng-hide="slot.added"
+                                    <button type="button" class="btn btn-default" ng-hide="vm.onPlanning(slot)"
                                             ng-click="vm.addSlot(res.orgaID, res.orgaName, slot)">Ajouter au
                                         planning
                                     </button>

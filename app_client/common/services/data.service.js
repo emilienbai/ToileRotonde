@@ -65,6 +65,18 @@
                     });
             };
 
+            var archiveReservationSSIAP = function (reservation){
+                return $http.put('/api/reservationSSIAP',
+                    {
+                        reservation: reservation
+                    },
+                    {
+                        headers: {
+                            Authorization: 'Bearer ' + authentication.getToken()
+                        }
+                    });
+            };
+
             var getReservationSSIAP = function (orgaID, archived) {
                 var query = "";
                 if (orgaID != null) {
@@ -154,6 +166,7 @@
                 postReservationSSIAP: postReservationSSIAP,
                 getReservationSSIAP: getReservationSSIAP,
                 getPendingSSIAPReservation: getPendingSSIAPReservation,
+                archiveReservationSSIAP: archiveReservationSSIAP,
                 postSlots: postSlots,
                 getSlots: getSlots
             };

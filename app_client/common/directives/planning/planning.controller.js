@@ -10,33 +10,32 @@
         $scope.events = [];
         $scope.clickedEvent = null;
 
+
         /* alert on eventClick */
-        $scope.alertOnEventClick = function (date, jsEvent, view) {
-            console.log(date);
+        $scope.alertOnEventClick = function( date, jsEvent, view){
             planningService.setClickedEvent(date);
         };
-
         /* Change View */
-        $scope.changeView = function (view, calendar) {
-            uiCalendarConfig.calendars[calendar].fullCalendar('changeView', view);
+        $scope.changeView = function(view,calendar) {
+            uiCalendarConfig.calendars[calendar].fullCalendar('changeView',view);
         };
         /* Change View */
-        $scope.renderCalender = function (calendar) {
-            if (uiCalendarConfig.calendars[calendar]) {
+        $scope.renderCalender = function(calendar) {
+            if(uiCalendarConfig.calendars[calendar]){
                 uiCalendarConfig.calendars[calendar].fullCalendar('render');
             }
         };
 
-        planningService.getSlots("2016-02", "2018-02", function (data) {
+        planningService.getSlots("2016-02", "2018-02", function(data){
             angular.copy(data, $scope.events);
         });
 
         /* config object */
         $scope.uiConfig = {
-            calendar: {
+            calendar:{
                 height: 500,
                 editable: false,
-                header: {
+                header:{
                     left: 'month agendaWeek',
                     center: 'title',
                     right: 'today prev,next'

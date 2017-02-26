@@ -4,7 +4,7 @@
         .module('RotondeApp')
         .controller('profileCtrl', profileCtrl);
 
-    profileCtrl.$inject = ['$scope','authentication', 'meanData', 'planningService'];
+    profileCtrl.$inject = ['$scope', 'authentication', 'meanData', 'planningService'];
     function profileCtrl($scope, authentication, meanData, planningService) {
         var vm = this;
         vm.isAdmin = false;
@@ -14,7 +14,7 @@
         vm.reservations = [];
 
         vm.clickedEvent = null;
-        $scope.$watch(planningService.getClickedEvent, function(change){
+        $scope.$watch(planningService.getClickedEvent, function (change) {
             vm.clickedEvent = change;
         });
 
@@ -73,6 +73,8 @@
         function onUserIsAdmin() {
             vm.isAdmin = true;
 
+            vm.addedSlots = [];
+
             //SSIAP Reservations
             meanData.getPendingSSIAPReservation(false, false)
                 .success(function (data) {
@@ -81,6 +83,21 @@
                 .error(function (e) {
                     console.log(e);
                 });
+
+            vm.archiveSSIAPRes = function (res) {
+                res.archived = true;
+                meanData.archiveReservationSSIAP(res)
+                    .success(function (data) {
+                        for (let i = 0; i < vm.sReservations.length; i++) {
+                            if (vm.sReservations[i]._id == res._id) {
+                                vm.sReservations.splice(i, 1);
+                            }
+                        }
+                    })
+                    .error(function (e) {
+                        console.log(e)
+                    });
+            };
 
             //Articles
             meanData.getPendingArticles()
@@ -105,13 +122,13 @@
 
                 function newSlot(slotDate, period) {
                     let s =
-                    {
-                        orgaID: orgaID,
-                        orgaName: orgaName,
-                        date: slotDate,
-                        period: period,
-                        audience: slotToAdd.audience
-                    };
+                        {
+                            orgaID: orgaID,
+                            orgaName: orgaName,
+                            date: slotDate,
+                            period: period,
+                            audience: slotToAdd.audience
+                        };
                     return s;
                 }
 
@@ -122,8 +139,8 @@
                 for (var date = moment(startDate); date.diff(endDate) <= 0; date.add(1, 'days')) {
                     console.log(moment(date).format('DD-MM-YYYY'));
                     var d = new Date(date.get("year"),
-                                        date.get("month"),
-                                            date.get("date"), 0, 0, 0, 0);
+                        date.get("month"),
+                        date.get("date"), 0, 0, 0, 0);
                     if (slotToAdd.morning) {
                         slots.push(newSlot(d, "morning"));
                     }
@@ -136,13 +153,21 @@
                 }
                 meanData.postSlots(slots)
                     .success(function (data) {
-                        console.log(data);
-                        slotToAdd.added=true;
+                        vm.addedSlots.push(slotToAdd._id);
                     })
                     .error(function (error) {
                         console.log(error.message);
                     })
-            }
+            };
+
+            vm.onPlanning = function (slot) {
+                for (let i = 0; i < vm.addedSlots.length; i++) {
+                    if (vm.addedSlots[i] == slot._id) {
+                        return true;
+                    }
+                }
+                return false;
+            };
 
         }
 

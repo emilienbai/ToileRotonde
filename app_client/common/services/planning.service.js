@@ -73,7 +73,9 @@
         };
 
         var addSlots = function (slots) {
-
+            for (let i = 0; i < slots.length ; i++){
+                events.push(slots[i]);
+            }
         };
 
         var removeSlot = function (slotId) {

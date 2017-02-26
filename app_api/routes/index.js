@@ -26,6 +26,7 @@ router.get('/reservations', auth, ctrlReservations.getUserReservations);
 //reservationSSIAP
 router.post('/reservationSSIAP', auth, ctrlReservationSSIAP.postReservationSSIAP);
 router.get('/reservationSSIAP', auth, ctrlReservationSSIAP.getReservations);
+router.put('/reservationSSIAP', auth, ctrlReservationSSIAP.archiveReservation);
 
 //articles
 router.post('/article', auth, ctrlArticles.postArticle);
