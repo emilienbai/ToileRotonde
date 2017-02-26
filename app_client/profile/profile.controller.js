@@ -4,14 +4,23 @@
         .module('RotondeApp')
         .controller('profileCtrl', profileCtrl);
 
-    profileCtrl.$inject = ['authentication', 'meanData'];
-    function profileCtrl(authentication, meanData) {
+    profileCtrl.$inject = ['$scope','authentication', 'meanData', 'planningService'];
+    function profileCtrl($scope, authentication, meanData, planningService) {
         var vm = this;
         vm.isAdmin = false;
         vm.isOrga = false;
         vm.sReservations = [];
         vm.articles = [];
         vm.reservations = [];
+
+        vm.clickedEvent = null;
+        $scope.$watch(planningService.getClickedEvent, function(change){
+            vm.clickedEvent = change;
+        });
+
+        vm.formatEvent = function () {
+            return planningService.formatEvent(vm.clickedEvent);
+        };
 
         vm.hasImage = function (article) {
             return (article.imageUrl != "");
@@ -28,7 +37,7 @@
             return temp;
         };
 
-        function onUserIsOrga (){
+        function onUserIsOrga() {
             vm.isOrga = true;
 
             //SSIAP Reservations
@@ -51,7 +60,6 @@
                 });
 
 
-
             //Hall Reservation
             meanData.getUserReservations(orgaID, false)
                 .success(function (data) {
@@ -62,7 +70,7 @@
                 });
         }
 
-        function onUserIsAdmin (){
+        function onUserIsAdmin() {
             vm.isAdmin = true;
 
             //SSIAP Reservations
@@ -82,6 +90,60 @@
                 .error(function (e) {
                     console.log(e);
                 });
+
+            meanData.getPendingReservations()
+                .success(function (data) {
+                    vm.reservations = data;
+                })
+                .error(function (e) {
+                    console.log(e);
+                });
+
+            vm.addSlot = function (orgaID, orgaName, slotToAdd) {
+                console.log(slotToAdd);
+                var slots = [];
+
+                function newSlot(slotDate, period) {
+                    let s =
+                    {
+                        orgaID: orgaID,
+                        orgaName: orgaName,
+                        date: slotDate,
+                        period: period,
+                        audience: slotToAdd.audience
+                    };
+                    return s;
+                }
+
+                var startDate = moment(slotToAdd.dateIn).startOf('day');
+                console.log("startDate: " + moment(startDate).format('DD-MM-YYYY-hh:mm:ss'));
+                var endDate = moment(slotToAdd.dateOut).startOf('day');
+                console.log("endDate: " + moment(endDate).format('DD-MM-YYYY-hh:mm:ss'));
+                for (var date = moment(startDate); date.diff(endDate) <= 0; date.add(1, 'days')) {
+                    console.log(moment(date).format('DD-MM-YYYY'));
+                    var d = new Date(date.get("year"),
+                                        date.get("month"),
+                                            date.get("date"), 0, 0, 0, 0);
+                    if (slotToAdd.morning) {
+                        slots.push(newSlot(d, "morning"));
+                    }
+                    if (slotToAdd.afternoon) {
+                        slots.push(newSlot(d, "afternoon"));
+                    }
+                    if (slotToAdd.evening) {
+                        slots.push(newSlot(d, "evening"));
+                    }
+                }
+                meanData.postSlots(slots)
+                    .success(function (data) {
+                        console.log(data);
+                        slotToAdd.added=true;
+                    })
+                    .error(function (error) {
+                        console.log(error.message);
+                    })
+            }
+
         }
 
         //User
@@ -89,10 +151,10 @@
         meanData.getProfile()
             .success(function (data) {
                 vm.user = data;
-                if(vm.user.accountType == "OrgaINSA"){
+                if (vm.user.accountType == "OrgaINSA") {
                     onUserIsOrga();
                 }
-                if(vm.user.accountType == "admin"){
+                if (vm.user.accountType == "admin") {
                     onUserIsAdmin();
                 }
             })

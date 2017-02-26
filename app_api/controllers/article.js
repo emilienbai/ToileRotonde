@@ -74,7 +74,6 @@ module.exports.postArticle = function (req, res) {
 };
 
 module.exports.getUserArticles = function (req, res) {
-    console.log("zobzob");
     if (!req.payload._id) {
         res.status(201).json({
             "message": "Missing payload in header"
@@ -112,7 +111,6 @@ module.exports.getUserArticles = function (req, res) {
                 .exec(function (err, user) {
                     if (!err) {
                         if (user.accountType == "admin") { //Admin authenticated
-                            console.log("zob");
                             //Trying to get all SSIAP reservations
                             var valid = true;
                             if (req.query.valid != null) {

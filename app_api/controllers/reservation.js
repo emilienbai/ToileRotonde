@@ -65,17 +65,31 @@ module.exports.getUserReservations = function (req, res) {
         if (req.query.archived) {
             archived = req.query.archived;
         }
-        //Organizations can see all of their articles but not the not validated ones for the other -> /todo later for
-        // other
+        //Organizations can see all of their reservations
         //Admin can see all reservations they want
-        if (req.query.orgaID == req.payload._id) { // Organization try to see its own articles
+        if (req.query.orgaID == req.payload._id) { // Organization try to see its own reservations
             Reservation.find({
                 'orgaID': req.query.orgaID,
                 'archived': archived
             }, function (err, docs) {
                 onMongoResults(err, docs);
-            });//onMongoResults(err, docs));
-        } //TODO Handle article consultation for logged, unlogged
+            });
+        } else if (req.query.orgaID == null) {//trying to see all reservations
+            User
+                .findById(req.payload._id)
+                .exec(function (err, user) {
+                    if (!err) {
+                        if (user._id == req.payload._id || user.accountType == "admin") {
+                            console.log("User is admin");
+                            Reservation.find({
+                                'archived': archived
+                            }, function (err, docs) {
+                                onMongoResults(err, docs);
+                            });
+                        }
+                    }
+                });
+        }
     }
 };
 

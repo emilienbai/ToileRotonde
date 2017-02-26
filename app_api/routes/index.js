@@ -12,6 +12,7 @@ var ctrlReservations = require('../controllers/reservation');
 var ctrlReservationSSIAP = require('../controllers/reservationSSIAP');
 var ctrlArticles = require('../controllers/article');
 var ctrlAuth = require('../controllers/authentication');
+var ctrlSlot = require('../controllers/slot');
 
 router.use(multer({dest: './uploads/'}).any());
 
@@ -29,6 +30,10 @@ router.get('/reservationSSIAP', auth, ctrlReservationSSIAP.getReservations);
 //articles
 router.post('/article', auth, ctrlArticles.postArticle);
 router.get('/article', auth, ctrlArticles.getUserArticles);
+
+//Slots
+router.post('/slot', auth, ctrlSlot.postSlots);
+router.get('/slot', ctrlSlot.getSlots);
 // authentication
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);

@@ -27,6 +27,32 @@
                     });
             };
 
+            var getUserReservations = function (orgaID, archived) {
+                var query = "";
+                if (orgaID != null) {
+                    query += "?orgaID=" + orgaID;
+                    if (archived != null) {
+                        query += "&archived=" + archived;
+                    }
+                } else if (archived != null) {
+                    query += "?archived=" + archived;
+                }
+
+                return $http.get('/api/reservations'+query, {
+                    headers: {
+                        Authorization: 'Bearer ' + authentication.getToken()
+                    }
+                });
+            };
+
+            var getPendingReservations = function () {
+                return $http.get('/api/reservations?archived=false',{
+                    headers: {
+                        Authorization: 'Bearer ' + authentication.getToken()
+                    }
+                });
+            };
+
             var postReservationSSIAP = function (reservation) {
                 return $http.post('/api/reservationSSIAP',
                     {
@@ -59,24 +85,6 @@
 
             var getPendingSSIAPReservation = function(){
                 return $http.get('/api/reservationSSIAP?archived=false', {
-                    headers: {
-                        Authorization: 'Bearer ' + authentication.getToken()
-                    }
-                });
-            };
-
-            var getUserReservations = function (orgaID, archived) {
-                var query = "";
-                if (orgaID != null) {
-                    query += "?orgaID=" + orgaID;
-                    if (archived != null) {
-                        query += "&archived=" + archived;
-                    }
-                } else if (archived != null) {
-                    query += "?archived=" + archived;
-                }
-
-                return $http.get('/api/reservations'+query, {
                     headers: {
                         Authorization: 'Bearer ' + authentication.getToken()
                     }
@@ -119,16 +127,35 @@
                 });
             };
 
+            var postSlots = function (slots){
+                return $http.post('/api/slot',
+                {
+                    slots: slots
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + authentication.getToken()
+                    }
+                });
+            };
+
+            var getSlots = function (from, to){
+                return $http.get('/api/slot?from='+from+'&to='+to);
+            };
+
             return {
                 getProfile: getProfile,
                 postReservations: postReservation,
                 getUserReservations: getUserReservations,
+                getPendingReservations: getPendingReservations,
                 postArticle: postArticle,
                 getUserArticles: getUserArticles,
                 getPendingArticles: getPendingArticles,
                 postReservationSSIAP: postReservationSSIAP,
                 getReservationSSIAP: getReservationSSIAP,
-                getPendingSSIAPReservation: getPendingSSIAPReservation
+                getPendingSSIAPReservation: getPendingSSIAPReservation,
+                postSlots: postSlots,
+                getSlots: getSlots
             };
         }
 

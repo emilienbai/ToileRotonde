@@ -50,3 +50,4 @@ require('./users');
 require('./reservation');
 require('./reservationSSIAP');
 require('./article');
+require('./slot');

@@ -1,6 +1,6 @@
 (function () {
 
-    angular.module('RotondeApp', ['ngRoute', 'ngMaterial']);
+    angular.module('RotondeApp', ['ngRoute', 'ngMaterial', 'ui.calendar']);
     function config($routeProvider, $locationProvider) {
         $routeProvider
             .when('/', {
@@ -38,6 +38,9 @@
                 controller: 'addArticleCtrl',
                 controllerAs: 'vm'
             })
+            .when('/planning', {
+                templateUrl: 'planning.html'
+            })
 
             .otherwise({redirectTo: '/'});
 
@@ -63,3 +66,4 @@
         .run(['$rootScope', '$location', 'authentication', run]);
 
 })();
+
