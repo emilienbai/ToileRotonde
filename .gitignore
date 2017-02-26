@@ -39,7 +39,6 @@ jspm_packages
 .idea/Site_Toile_Rotonde.iml
 .idea/vcs.xml
 .idea/workspace.xml
-app_client/app.min.js
 app_client/app.min.js.map
 .idea/misc.xml
 
