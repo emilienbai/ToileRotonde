@@ -5,7 +5,6 @@ var Article = mongoose.model('Article');
 var User = mongoose.model('User');
 
 module.exports.postArticle = function (req, res) {
-    console.log(req);
     if (!req.payload._id || !req.body.name || !req.body.dateIn || !req.body.dateOut || !req.body.orgaID || !req.body.orgaName) {
         res.status(201).json({
             "message": "Missing payload or article element"
@@ -67,6 +66,69 @@ module.exports.postArticle = function (req, res) {
                         res.status(201).json({
                             "message": "You are not allowed to create an article for this user"
                         });
+                    }
+                }
+            });
+    }
+};
+
+module.exports.editArticle = function (req, res) {
+    if (!req.payload._id || !req.body.article) {
+        res.status(201).json({
+            "message": "Missing payload or article element"
+        });
+    } else {
+        User
+            .findById(req.payload._id)
+            .exec(function (err, user) {
+                if (!err) {
+                    if (user._id == req.payload._id || user.accountType == "admin") {
+                        var art = req.body.article;
+                        Article
+                            .findById(art._id)
+                            .exec(function (err, article) {
+                                    if (article.orgaID == req.payload._id || user.accountType == "admin") {
+                                        if (user.accountType != "admin") {
+                                            art.valid = article.valid; // non admin cannot update validity
+                                        }
+                                        Article
+                                            .update({_id: req.body.article._id},
+                                                {
+                                                    $set: {
+                                                        imageUrl: art.imageUrl,
+                                                        text: art.text,
+                                                        time: art.time,
+                                                        name: art.name,
+                                                        dateIn: art.dateIn,
+                                                        dateOut: art.dateOut,
+                                                        valid: art.valid
+                                                    }
+                                                }, function (error, doc) {
+                                                    if (!error) {
+                                                        res.status(200).json(doc);
+                                                    } else {
+                                                        res.status(400).json({
+                                                            message: error
+                                                        });
+                                                    }
+                                                }
+                                                ,
+                                                function (error, doc) {
+                                                    if (!error) {
+                                                        res.status(200).json(doc);
+                                                    } else {
+                                                        res.status(400).json({
+                                                            message: error
+                                                        });
+                                                    }
+                                                }
+                                            );
+                                    }
+                                    else {
+                                        res.status(201).json({message: "Your are not allowed to edit this article"})
+                                    }
+                                }
+                            )
                     }
                 }
             });

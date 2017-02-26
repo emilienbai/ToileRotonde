@@ -108,6 +108,21 @@
                     console.log(e);
                 });
 
+            vm.validArticle = function (article){
+                article.valid = true;
+                meanData.editArticle(article)
+                    .success(function(data){
+                        for (let i = 0; i < vm.articles.length; i++) {
+                            if (vm.articles[i]._id == article._id) {
+                                vm.articles.splice(i, 1);
+                            }
+                        }
+                    })
+                    .error(function(e){
+                        console.log(e.message)
+                    })
+            };
+
             meanData.getPendingReservations()
                 .success(function (data) {
                     vm.reservations = data;

@@ -31,6 +31,7 @@ router.put('/reservationSSIAP', auth, ctrlReservationSSIAP.archiveReservation);
 //articles
 router.post('/article', auth, ctrlArticles.postArticle);
 router.get('/article', auth, ctrlArticles.getUserArticles);
+router.put('/article', auth, ctrlArticles.editArticle);
 
 //Slots
 router.post('/slot', auth, ctrlSlot.postSlots);
