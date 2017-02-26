@@ -6,6 +6,8 @@ var User = mongoose.model('User');
 
 module.exports.postArticle = function (req, res) {
     if (!req.payload._id || !req.body.name || !req.body.dateIn || !req.body.dateOut || !req.body.orgaID || !req.body.orgaName) {
+        console.log(req.payload._id);
+        console.log(req.body);
         res.status(201).json({
             "message": "Missing payload or article element"
         });
