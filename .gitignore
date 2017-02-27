@@ -42,3 +42,6 @@ jspm_packages
 app_client/app.min.js.map
 .idea/misc.xml
 
+app_client/app.min.js
+app_api/config.json
+app_api/config.json
