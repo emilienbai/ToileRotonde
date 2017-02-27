@@ -120,6 +120,7 @@
 
             <!-------------------------ADMIN---------------------------->
             <div ng-show="vm.isAdmin">
+                <!------------------------------------------RESA SSIAP------------------------------------------------>
                 <div class="row">
                     <h1 class="form-signin-heading">Réservations SSIAP en attente</h1>
                 </div>
@@ -159,7 +160,7 @@
                     </div>
                 </div>
 
-
+                <!-------------------------------------------------ARTICLES-------------------------------------------->
                 <div class="row">
                     <h1 class="form-signin-heading">Articles à valider</h1>
                 </div>
@@ -183,11 +184,13 @@
                     </div>
                     <div class="col-md-offset-10">
                         <button class="btn btn-default" type="button" ng-click="vm.validArticle(art)">Valider cet
-                            article</button>
+                            article
+                        </button>
 
                     </div>
                 </div>
 
+                <!-------------------------------------------RESA------------------------------------------------------>
                 <div class="row">
                     <h1 class="form-signin-heading">Réservations en attente</h1>
                 </div>
@@ -215,15 +218,21 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <button type="button" class="btn btn-default" ng-hide="vm.onPlanning(slot)"
+                                    <button type="button" class="btn btn-default pull-right" ng-hide="vm.onPlanning(slot)"
                                             ng-click="vm.addSlot(res.orgaID, res.orgaName, slot)">Ajouter au
                                         planning
                                     </button>
                                 </div>
                                 <hr>
                             </div>
+                            <div class="col-sm-9">
+                                <label>Commentaire : </label><span>{{res.comments}}</span>
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-warning pull-right" ng-click="vm.archiveReservation(res)">
+                                    Archiver</button>
+                            </div>
 
-                            <label>Commentaire : </label><span>{{res.comments}}</span>
                         </div>
                     </div>
                 </div>

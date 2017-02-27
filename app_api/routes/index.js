@@ -22,6 +22,7 @@ router.get('/profile', auth, ctrlProfile.profileRead);
 //reservations
 router.post('/reservations', auth, ctrlReservations.postReservations);
 router.get('/reservations', auth, ctrlReservations.getUserReservations);
+router.put('/reservations', auth, ctrlReservations.editReservations);
 
 //reservationSSIAP
 router.post('/reservationSSIAP', auth, ctrlReservationSSIAP.postReservationSSIAP);

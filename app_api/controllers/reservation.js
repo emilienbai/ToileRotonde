@@ -43,6 +43,58 @@ module.exports.postReservations = function (req, res) {
     }
 };
 
+module.exports.editReservations = function (req, res) {
+    if (!req.payload._id || !req.body.reservation) {
+        res.status(201).json({
+            "message": "Missing payload or reservation"
+        });
+    } else {
+        User
+            .findById(req.payload._id)
+            .exec(function (err, user) {
+                if (!err) {
+                    if (user._id == req.payload._id || user.accountType == "admin") {
+
+                        var resa = req.body.reservation;
+
+                        Reservation
+                            .findById(resa._id)
+                            .exec(function (err, reser) {
+                                if (reser.orgaID == req.payload._id || user.accountType == "admin") {
+                                    if (user.accountType != "admin") {
+                                        resa.archived = reser.valid; // non admin cannot update archived status
+                                    }
+                                    Reservation
+                                        .update({_id: resa._id},
+                                            {
+                                                $set: {
+                                                    res: resa.res,
+                                                    archived: resa.archived,
+                                                    light: resa.light,
+                                                    sound: resa.sound,
+                                                    comments: resa.comments
+                                                }
+                                            }, function (error, doc) {
+                                                if (!error) {
+                                                    res.status(200).json(doc);
+                                                } else {
+                                                    res.status(400).json({
+                                                        message: error
+                                                    });
+                                                }
+                                            })
+                                }
+                            });
+                    } else {
+                        res.status(201).json({
+                            "message": "You are not allowed to edit this reservation"
+                        });
+                    }
+                }
+            });
+    }
+};
+
 module.exports.getUserReservations = function (req, res) {
     if (!req.payload._id) {
         res.status(201).json({

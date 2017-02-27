@@ -75,7 +75,7 @@
 
             vm.addedSlots = [];
 
-            //SSIAP Reservations
+            /****************************************SSIAP Reservations************************************************/
             meanData.getPendingSSIAPReservation(false, false)
                 .success(function (data) {
                     vm.sReservations = data;
@@ -99,7 +99,7 @@
                     });
             };
 
-            //Articles
+            /************************************************Articles**************************************************/
             meanData.getPendingArticles()
                 .success(function (data) {
                     vm.articles = data;
@@ -123,6 +123,7 @@
                     })
             };
 
+            /*************************************************Reservation**********************************************/
             meanData.getPendingReservations()
                 .success(function (data) {
                     vm.reservations = data;
@@ -169,8 +170,25 @@
                 meanData.postSlots(slots)
                     .success(function (data) {
                         vm.addedSlots.push(slotToAdd._id);
+                        planningService.addSlots(data);
                     })
                     .error(function (error) {
+                        console.log(error.message);
+                    })
+            };
+
+            vm.archiveReservation = function (reservation){
+                reservation.archived = true;
+                meanData.editReservation(reservation)
+                    .success(function(data){
+                        for (let i = 0; i< vm.reservations.length; i++){
+                            if(reservation._id == vm.reservations[i]._id){
+                                vm.reservations.splice(i, 1);
+                                break;
+                            }
+                        }
+                    })
+                    .error(function(error){
                         console.log(error.message);
                     })
             };
@@ -186,7 +204,7 @@
 
         }
 
-        //User
+        /***************************************************User*******************************************************/
         vm.user = {};
         meanData.getProfile()
             .success(function (data) {

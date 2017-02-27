@@ -45,3 +45,5 @@ app_client/app.min.js.map
 app_client/app.min.js
 app_api/config.json
 app_api/config.json
+app_client/app.min.js
+app_client/app.min.js

@@ -53,6 +53,16 @@
             });
         };
 
+        var editReservation = function(reservation){
+            return $http.put('/api/reservations', {
+                reservation: reservation
+            }, {
+                    headers: {
+                        Authorization: 'Bearer ' + authentication.getToken()
+                }
+            })
+        };
+
         var postReservationSSIAP = function (reservation) {
             return $http.post('/api/reservationSSIAP',
                 {
@@ -172,6 +182,7 @@
             postReservations: postReservation,
             getUserReservations: getUserReservations,
             getPendingReservations: getPendingReservations,
+            editReservation: editReservation,
             postArticle: postArticle,
             editArticle: editArticle,
             getUserArticles: getUserArticles,

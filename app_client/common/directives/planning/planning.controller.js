@@ -11,6 +11,10 @@
         $scope.clickedEvent = null;
 
 
+        $scope.$watch(planningService.getFormatedEvent, function(change){
+            angular.copy(change, $scope.events);
+        });
+
         /* alert on eventClick */
         $scope.alertOnEventClick = function( date, jsEvent, view){
             planningService.setClickedEvent(date);

@@ -7,8 +7,10 @@
     planning.$inject = ['meanData'];
     function planning(meanData) {
 
-        var events = [];
         var clickedEvent = null;
+        var rawData = [];
+        var formatedEvents = [];
+
 
         var stringToColour = function (str) {
             var hash = 0;
@@ -24,7 +26,7 @@
         };
 
         var updateEvents = function (data) {
-            events = [];
+            var events = [];
             for (var i = 0; i < data.length; i++) {
                 var date = new Date(data[i].date);
                 var d = date.getDate();
@@ -58,12 +60,14 @@
                     period: data[i].period
                 });
             }
+            formatedEvents = events;
             return events;
         };
 
         var getSlots = function (from, to, callback) {
             meanData.getSlots(from, to)
                 .success(function (data) {
+                    rawData = data;
                     callback(updateEvents(data));
                 })
                 .error(function (error) {
@@ -72,10 +76,15 @@
                 })
         };
 
+        var getFormatedEvent = function() {
+            return formatedEvents;
+        };
+
         var addSlots = function (slots) {
             for (let i = 0; i < slots.length ; i++){
-                events.push(slots[i]);
+                rawData.push(slots[i]);
             }
+            updateEvents(rawData);
         };
 
         var removeSlot = function (slotId) {
@@ -103,6 +112,7 @@
             getSlots: getSlots,
             addSlots: addSlots,
             removeSlot: removeSlot,
+            getFormatedEvent: getFormatedEvent,
             setClickedEvent: setClickedEvent,
             getClickedEvent: getClickedEvent,
             formatEvent: formatEvent

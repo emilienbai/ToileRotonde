@@ -20,9 +20,7 @@ module.exports.postSlots = function (req, res) {
                                     "message": error
                                 })
                             } else {
-                                res.status(200).json({
-                                    "result": docs
-                                })
+                                res.status(200).json(docs)
                             }
                         })
                     } else {
